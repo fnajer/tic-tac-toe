@@ -66,6 +66,7 @@ class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
+      ascendOrder: true,
     }
   }
   handleClick(i) {
@@ -97,6 +98,12 @@ class Game extends React.Component {
     this.setState({
       stepNumber: step,
       xIsNext: (step % 2) === 0,
+    });
+  }
+
+  toggleOrder() {
+    this.setState({
+      ascendOrder: !this.state.ascendOrder,
     });
   }
 
@@ -144,7 +151,20 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <button onClick={() => this.toggleOrder()}>
+            {
+              this.state.ascendOrder ? 
+              'Descend order' :
+              'Ascend order'
+            }
+          </button>
+          <ol>
+            {
+              this.state.ascendOrder ?
+              moves : 
+              [...moves].reverse()
+            }
+          </ol>
         </div>
       </div>
     );
