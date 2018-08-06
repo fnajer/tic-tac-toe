@@ -149,7 +149,7 @@ class Game extends React.Component {
           <Board 
             onClick={i => this.handleClick(i)}
             squares={current.squares}
-            comboVictory={winner ? winner.comboVictory : null}
+            comboVictory={(winner && winner.comboVictory) || null}
           />
         </div>
         <div className="game-info">
@@ -196,6 +196,12 @@ const cords = [
 ];
 
 function calculateWinner(squares) {
+  if (!~squares.indexOf(null)) {
+    return {
+      playerName: 'Draw',
+    };
+  }
+
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
