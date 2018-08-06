@@ -107,7 +107,10 @@ class Game extends React.Component {
 
       return (
         <li key={move}>
-          <button onClick={() => this.toJump(move)}>
+          <button 
+            onClick={() => this.toJump(move)}
+            style={{ fontWeight: (this.state.stepNumber === move) ? 'bold' : 'normal' }}
+          >
             {desc} 
             {formatCords}
           </button>
