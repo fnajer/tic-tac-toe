@@ -52,7 +52,8 @@ class Game extends React.Component {
 
     this.state = {
       history: [{
-        squares: Array(9).fill(null), 
+        squares: Array(9).fill(null),
+        cordsOfMove: null,
       }],
       stepNumber: 0,
       xIsNext: true,
@@ -68,10 +69,14 @@ class Game extends React.Component {
 
     const newSquares = current.squares.slice();
     newSquares[i] = this.state.xIsNext ? 'X' : 'O';
+
+    const cordsOfMove = cords[i]; // don't need immutable, since this data never update
+    
     this.setState({
       history: history.concat([
         {
           squares: newSquares,
+          cordsOfMove: cordsOfMove,
         }
       ]),
       stepNumber: history.length,
@@ -93,12 +98,18 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ?
-        'Go to the move #' + move :
+        'Go to the move #' + move + ' ' :
         'Go to the start';
+        
+      let formatCords = '';
+      if (step.cordsOfMove)
+        formatCords = `Column: ${step.cordsOfMove[0]}. Row: ${step.cordsOfMove[1]}`;
+
       return (
         <li key={move}>
           <button onClick={() => this.toJump(move)}>
-            {desc}
+            {desc} 
+            {formatCords}
           </button>
         </li>
       );
@@ -135,6 +146,19 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+// need function for translate from index 0-8 to number column and row
+// or tricky convert, somehow via divide or %.
+const cords = [
+  ['1', '1'],
+  ['1', '2'],
+  ['1', '3'],
+  ['2', '1'],
+  ['2', '2'],
+  ['2', '3'],
+  ['3', '1'],
+  ['3', '2'],
+  ['3', '3'],
+];
 
 function calculateWinner(squares) {
   const lines = [
